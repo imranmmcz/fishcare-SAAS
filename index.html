@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[translate:ফিশ কেয়ার] Digital Fishery Platform</title>
+    <link rel="stylesheet" href="fishcare.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div id="logo">[translate:ফিশ কেয়ার]</div>
+        <nav>
+            <button onclick="showSection('farmer')">[translate:চাষী কর্নার]</button>
+            <button onclick="showSection('seller')">[translate:বিক্রেতা কর্নার]</button>
+            <button onclick="showSection('login')">[translate:লগইন]</button>
+            <button onclick="showSection('register')">[translate:রেজিস্ট্রেশন]</button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <div class="hero-carousel">
+        <img src="hilsa.jpg" alt="[translate:ইলিশ মাছ]" />
+        <img src="rui.jpg" alt="[translate:রুই মাছ]" />
+        <img src="katla.jpg" alt="[translate:কাতলা মাছ]" />
+        <!-- Add JS carousel logic later -->
+    </div>
+
+    <!-- Market Price Search -->
+    <section id="market-search">
+        <h2>[translate:মাছের বাজারদর]</h2>
+        <div>
+            <select id="divisionSelect" onchange="updateDistricts()">
+                <option value="">[translate:বিভাগ নির্বাচন করুন]</option>
+                <!-- populate from JS data -->
+            </select>
+            <select id="districtSelect" onchange="updateUpazilas()">
+                <option value="">[translate:জেলা নির্বাচন করুন]</option>
+            </select>
+            <select id="upazilaSelect" onchange="fetchMarketPrices()">
+                <option value="">[translate:উপজেলা নির্বাচন করুন]</option>
+            </select>
+        </div>
+        <table id="priceTable">
+            <thead>
+                <tr>
+                    <th>[translate:বাজারের নাম]</th>
+                    <th>[translate:মাছের প্রজাতি]</th>
+                    <th>[translate:গড় ওজন (কেজি)]</th>
+                    <th>[translate:বাজার দর (প্রতি কেজি)]</th>
+                    <th>[translate:মজুদ (কেজি)]</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Populated by JS -->
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Farmer Dashboard -->
+    <section id="farmer" style="display:none;">
+        <h2>[translate:চাষী ড্যাশবোর্ড]</h2>
+        <!-- Inventory Management -->
+        <form id="inventoryForm">
+            <label>[translate:পুকুর/ঘেরের নাম]: <input type="text" name="pondName"></label>
+            <label>[translate:মাছের প্রজাতি]:
+                <select name="fishSpecies">
+                    <option>[translate:রুই]</option>
+                    <option>[translate:কাতলা]</option>
+                    <option>[translate:পাঙ্গাস]</option>
+                    <!-- Add all species -->
+                </select>
+            </label>
+            <label>[translate:গড় ওজন]: <input type="number" name="avgWeight"></label>
+            <label>[translate:পরিমাণ (কেজি)]: <input type="number" name="quantity"></label>
+            <button type="submit">[translate:সংরক্ষণ]</button>
+        </form>
+        <table>
+            <caption>[translate:পুকুরের মাছের তালিকা]</caption>
+            <thead>
+                <tr>
+                    <th>[translate:পুকুর]</th>
+                    <th>[translate:প্রজাতি]</th>
+                    <th>[translate:ওজন]</th>
+                    <th>[translate:পরিমাণ]</th>
+                </tr>
+            </thead>
+            <tbody id="inventoryTable">
+                <!-- Populated by JS -->
+            </tbody>
+        </table>
+        <!-- Financial Ledger -->
+        <form id="ledgerForm">
+            <label>[translate:খাত নির্বাচন করুন]:
+                <select name="type">
+                    <option value="income">[translate:আয়]</option>
+                    <option value="expense">[translate:ব্যয়]</option>
+                </select>
+            </label>
+            <label>[translate:বিবরণ]: <input type="text" name="desc"></label>
+            <label>[translate:পরিমাণ]: <input type="number" name="amount"></label>
+            <button type="submit">[translate:যোগ করুন]</button>
+        </form>
+        <table>
+            <caption>[translate:আয়-ব্যয় বিবরণ]</caption>
+            <thead>
+                <tr>
+                    <th>[translate:ধরন]</th>
+                    <th>[translate:বিবরণ]</th>
+                    <th>[translate:পরিমাণ]</th>
+                </tr>
+            </thead>
+            <tbody id="ledgerTable">
+                <!-- Populated by JS -->
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Seller Dashboard -->
+    <section id="seller" style="display:none;">
+        <h2>[translate:বিক্রেতা ড্যাশবোর্ড]</h2>
+        <!-- Market Price Update -->
+        <form id="marketPriceForm">
+            <label>[translate:মাছের প্রজাতি]:
+                <select name="species">
+                    <option>[translate:ইলিশ]</option>
+                    <option>[translate:কাতলা]</option>
+                    <!-- Add all species -->
+                </select>
+            </label>
+            <label>[translate:পাইকারি দর]: <input type="number" name="wholesalePrice"></label>
+            <label>[translate:খুচরা দর]: <input type="number" name="retailPrice"></label>
+            <button type="submit">[translate:সংরক্ষণ]</button>
+        </form>
+        <!-- Transaction Logging -->
+        <form id="transactionForm">
+            <label>[translate:ক্রয় বা বিক্রয় নির্বাচন করুন]:
+                <select name="type">
+                    <option value="buy">[translate:ক্রয়]</option>
+                    <option value="sell">[translate:বিক্রয়]</option>
+                </select>
+            </label>
+            <label>[translate:বিবরণ]: <input type="text" name="desc"></label>
+            <label>[translate:পরিমাণ]: <input type="number" name="amount"></label>
+            <button type="submit">[translate:যোগ করুন]</button>
+        </form>
+        <table>
+            <caption>[translate:লেনদেনের তালিকা]</caption>
+            <thead>
+                <tr>
+                    <th>[translate:ধরন]</th>
+                    <th>[translate:বিবরণ]</th>
+                    <th>[translate:পরিমাণ]</th>
+                </tr>
+            </thead>
+            <tbody id="transactionTable">
+                <!-- Populated by JS -->
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Invoice Generator -->
+    <section id="invoice" style="display:none;">
+        <h2>[translate:চালান জেনারেটর]</h2>
+        <form id="invoiceForm">
+            <div id="invoiceRows">
+                <!-- JS will add rows here -->
+            </div>
+            <button type="button" onclick="addInvoiceRow()">[translate:নতুন মাছ যোগ করুন]</button>
+            <div>
+                <strong>[translate:সর্বমোট টাকা]: <span id="totalAmount">0</span></strong>
+            </div>
+            <button type="submit">[translate:চালান তৈরি করুন]</button>
+        </form>
+        <div id="invoiceResult" style="display:none;">
+            <!-- Invoice Preview will show here -->
+        </div>
+    </section>
+
+    <script src="fishcare.js"></script>
+</body>
+</html>
